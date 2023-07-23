@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Street View split-map-panes</title>
+    <script type="module" src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- jsFiddle will insert css and js -->
+  </head>
+  <body>
+    <h2 id="header"> <i>Not</i>&nbsp;GeoGuessr</h2>
+    
+    
+    <div id="map"></div>
+    <div id="pano"></div>
+    <div id="panel">
+      <h2 id="distance">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mark the map to guess where you are...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+      <button id="submit">Submit</button>
+      <button onClick="window.location.reload();" id="newmap">New Map</button>
+    </div>
+    
+   
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1-KJWBwMDlCku2Ce1POI0ldyehlsCB1I&callback=initialize"
+    defer></script>
+     
+      
+    
+  </body>
+</html>
