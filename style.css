@@ -65,12 +65,15 @@ i{
 
 
  #distance{
+  font-weight: 200;
    font-size: larger;
    text-align: center;
  }
 
  #panel{ 
-  width: fit-content;
+  text-align: center;
+  font-family: Monospace;
+  width: 30%;
   text-align: center;
   border: black;
   border-style: solid;
