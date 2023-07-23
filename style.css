@@ -16,8 +16,8 @@ i{
 
  #map,
  #pano {
-   height: 50%;
-   width: 27%;
+   height: 15rem;
+   width: 30%;
    border: gray;
    border-style: dashed;
  }
@@ -31,15 +31,10 @@ i{
  }
  
  #map{
-   margin-top: 15%;
-   opacity: .8;
-   bottom: 2rem;
-   z-index: 1;
-   display: flex;
-   float: right;
-   border: none;
-   z-index: 100
-   ;
+  opacity: .8;
+  border: none;
+  z-index: 100;
+  display: flow-root;
  }
  #map:hover{
    opacity: 1;
@@ -74,14 +69,14 @@ i{
    text-align: center;
  }
 
- #panel{
-   margin-left: 73%;
-   width: fit-content;
-   text-align: center;
-   border: black;
-   border-style:solid;
-   position: fixed;
-   top: 27.85rem;
-   background-color: antiquewhite;
-   z-index: 100;
+ #panel{ 
+  width: fit-content;
+  text-align: center;
+  border: black;
+  border-style: solid;
+  position: relative;
+  background-color: antiquewhite;
+  z-index: 100;
+  display: flow-root;
+  float: right;
  }

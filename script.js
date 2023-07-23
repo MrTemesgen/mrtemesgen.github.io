@@ -104,7 +104,15 @@ async function getCity(){
 async function getName(lat, lng){
     var res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=true&key=AIzaSyC1-KJWBwMDlCku2Ce1POI0ldyehlsCB1I`);
     var json = await res.json();
-    return json["results"][0].formatted_address;
+    console.log(json)
+    var location = "Couldn't get location";
+    try{
+        location = json["results"][0].formatted_address;
+    }catch(err){
+        console.log(json);
+        console.log(console.error());
+    }
+    return location;
 }
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
