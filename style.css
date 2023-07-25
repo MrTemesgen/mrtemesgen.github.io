@@ -39,30 +39,59 @@ i{
  #map:hover{
    opacity: 1;
  }
- #submit,#newmap{
+ #submit,#newmap,#showhistory{
     border-radius: .2rem;
     border-style:ridge;
     font-size:smaller;
     background-color:seashell;
     margin: .2rem;
  }
-
- #header {
-    text-align: center;
-    display:flex;
-    justify-content: center;
-    font-size: 2.5rem;
-    margin: 0rem;
-    border: black;
-    width: 20%;
-    margin-left: 40%;
-    padding: .2rem;
-    border-style:double;
-    background-color: antiquewhite;
-    position: absolute;
-    z-index: 100;
+ #historyTable{
+  text-align: center;
+  padding: .5rem;
+  margin: 0 auto;
+ }
+ th{
+  font-size: larger;
+ }
+ td{
+  text-align: left;
+  border: black;
+  border-style: solid;
+  border-width: thin;
  }
 
+ #headerContainer {
+  text-align: center;
+  display: table;
+  justify-content: center;
+  font-size: 1rem;
+  margin: 0rem;
+  margin-left: 0rem;
+  border: black;
+  width: fit-content;
+  padding: .2rem;
+  border-style: double;
+  background-color: antiquewhite;
+  position: absolute;
+  z-index: 100;
+  height: fit-content;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#header {
+  font-size: 2.5rem;
+  text-align: center;
+  display:flex;
+  margin: 0rem;
+  z-index: 100;
+}
+#timer{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-family: Monospace;
+}
 
  #distance{
   font-weight: 200;

@@ -1,9 +1,25 @@
 var marker;
+var distance = document.querySelector("#distance");
+var timer = document.querySelector("#timer");
+var historyTable = document.querySelector("#history");
+var showHistoryBtn = document.querySelector("#showhistory");
+//defines which element we are writing to with type writer
+var element = distance;
+var text = "";
+var typeSpeed = 25;
+var textIndex = 0;
+var timeOutID;
+var seconds = 0;
+var timerID;
+var start = new Date();
+var gameOver = false;
+var historyShowing = false;
+//time to solve
+var tts;
 function initialize() {
     getCities().then(res => {
         var center = {lat: 0, lng: 0};
         var city = res[parseInt(Math.random()*(res.length-1))]
-        console.log(city);
         city.lat = parseFloat(city.lat);
         city.lng = parseFloat(city.lng);
         const map = new google.maps.Map(document.getElementById("map"), {
@@ -13,12 +29,13 @@ function initialize() {
         const panorama = new google.maps.StreetViewPanorama(
             document.getElementById("pano"),
             {
-            position: city,
-            disableDefaultUI: true,
-            pov: {
-                heading: 34,
-                pitch: 10,
-            },
+                position: city,
+                disableDefaultUI: true,
+                pov: {
+                    heading: 34,
+                    pitch: 10,
+                },
+                radius: 5000
             }
         );
         marker = new google.maps.Marker({
@@ -27,46 +44,57 @@ function initialize() {
         });
         
         map.addListener('click', function(e) {
-            marker.setMap(null);
-            marker = new google.maps.Marker({
-                position: e.latLng,
-                map: map
-            });
-            marker.setMap(map);
+            if(!gameOver){
+                marker.setMap(null);
+                marker = new google.maps.Marker({
+                    position: e.latLng,
+                    map: map
+                });
+                marker.setMap(map);
+            }
         });
         document.querySelector("#submit").addEventListener('click', function() {
-            var lat = marker.getPosition().lat();
-            var lng = marker.getPosition().lng();
-        
-            const flightPlanCoordinates = [
-                { lat: lat, lng: lng},
-                { lat: city.lat, lng: city.lng},
-            ];
-            const flightPath = new google.maps.Polyline({
-                    path: flightPlanCoordinates,
-                    geodesic: true,
-                    strokeColor: "#FF0000",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2,
+            if(!gameOver){
+                gameOver = true;
+                var lat = marker.getPosition().lat();
+                var lng = marker.getPosition().lng();
+                
+                clearTimeout(timerID);
+                const flightPlanCoordinates = [
+                    { lat: lat, lng: lng},
+                    { lat: city.lat, lng: city.lng},
+                ];
+                const flightPath = new google.maps.Polyline({
+                        path: flightPlanCoordinates,
+                        geodesic: true,
+                        strokeColor: "#FF0000",
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2,
+                    });
+                var actualPosition = new google.maps.Marker({
+                    position: city,
+                    map: map
                 });
-            var actualPosition = new google.maps.Marker({
-                position: city,
-                map: map
-            });
-            flightPath.setMap(map);
-            var bounds = new google.maps.LatLngBounds();
-            bounds.extend(flightPlanCoordinates[0]);
-            bounds.extend(flightPlanCoordinates[1]);
-            map.fitBounds(bounds);
-            getName(city.lat, city.lng).then(loc => {
-                document.querySelector("#distance").innerHTML = `${getDistanceFromLatLonInKm(lat, lng, city.lat, city.lng)}km from \n ${loc}`;
-            });
+                flightPath.setMap(map);
+                var bounds = new google.maps.LatLngBounds();
+                bounds.extend(flightPlanCoordinates[0]);
+                bounds.extend(flightPlanCoordinates[1]);
+                map.fitBounds(bounds);
+                getName(city.lat, city.lng).then(loc => {
+                    var distanceInKM = getDistanceFromLatLonInKm(lat, lng, city.lat, city.lng);
+                    var formattedTime = tts.toISOString().substring(11, 22);
+                    typeWrite(document.querySelector("#distance"), `${distanceInKM}km from ${loc}. Found in ${formattedTime} (hh:mm:ss.ms)`);
+                    document.cookie = loc + "=" + JSON.stringify({
+                        location: loc,
+                        distanceInKM: distanceInKM,
+                        time: formattedTime
+                    });
+                });
+            }
         })
-
-        
-       
     })   
-    map.setStreetView(panorama);
+    
+
 }
 function placeMarker(position, map) {
     var marker = new google.maps.Marker({
@@ -81,33 +109,13 @@ async function getCities(){
     return json;
 }
 
-async function getCity(){
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://api.3geonames.org/?randomland=yes.xml");
-
-    // If specified, responseType must be empty string or "document"
-    xhr.responseType = "document";
-
-    // Force the response to be parsed as XML
-    xhr.overrideMimeType("text/xml");
-
-    xhr.onload = () => {
-    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-        console.log(xhr.response, xhr.responseXML);
-    }
-    };
-
-    xhr.send();
-
-}
-
 async function getName(lat, lng){
     var res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=true&key=AIzaSyC1-KJWBwMDlCku2Ce1POI0ldyehlsCB1I`);
     var json = await res.json();
-    console.log(json)
     var location = "Couldn't get location";
     try{
-        location = json["results"][0].formatted_address;
+        location = json["results"][5].formatted_address;
+        
     }catch(err){
         console.log(json);
         console.log(console.error());
@@ -127,9 +135,72 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
     var d = R * c; // Distance in km
     return parseInt(d);
-  }
-  
-  function deg2rad(deg) {
+    }
+function deg2rad(deg) {
     return deg * (Math.PI/180)
-  }
+}
+
+function typeWrite(ele, newText){
+    element = ele;
+    element.innerHTML = "";
+    text = newText;
+    textIndex = 0;
+    typeWriteHelper();
+}
+
+function typeWriteHelper(){
+    if(textIndex < text.length){
+        element.innerHTML += text.charAt(textIndex);
+        textIndex++;
+        timeOutID = setTimeout(typeWriteHelper, typeSpeed);
+    }else{
+        clearTimeout(timeOutID);
+    }
+}
+
+function getTime(){
+    var date = new Date(0);
+    date.setMilliseconds((Date.now()-start));
+    return date;
+}
+
+function showHistoryTable(){
+    if(!historyShowing){
+        var cookies = getCookies();
+        var table = `<table id="historyTable"><tr><th>Location</th><th>Distance</th><th>Time</th></tr>`
+        for(var cookie of cookies){
+            table += `<tr><td>${cookie.location}</th><td>${cookie.distanceInKM}km</td><td>${cookie.time}</td></tr>`       
+        }
+        table += `</table`;
+        historyTable.innerHTML = table;
+        showHistoryBtn.innerHTML = "Hide History";
+    }else{
+        historyTable.innerHTML = "";
+        showHistoryBtn.innerHTML = "Show History";
+    }
+    historyShowing = !historyShowing;
+}
+
+function getCookies(){
+    var pairs = document.cookie.split(";");
+    var cookies = [];
+    for (var i=0; i<pairs.length; i++){
+        var pair = pairs[i].split("=");
+        if(pair[1]){
+            cookies.push(JSON.parse(pair[1]));
+        }
+    }
+    cookies.sort(function(a, b){
+        return a.distanceInKM - b.distanceInKM;
+    })
+    return cookies;
+}
+
 window.initialize = initialize;
+
+typeWrite(element, "Mark the map to guess where you are...");
+timerID = setInterval(function(){
+    tts = getTime();
+    timer.innerHTML = tts.toISOString().substring(11, 22);
+}, 10);
+showHistoryBtn.addEventListener('click', showHistoryTable)
