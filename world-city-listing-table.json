@@ -1,0 +1,214 @@
+{
+  "cities": [
+    {
+      "name": "London",
+      "latitude": 51.5012362,
+      "longitude": -0.1261716,
+      "continent": "Europe"
+    },
+    {
+      "name": "Paris",
+      "latitude": 48.8584,
+      "longitude": 2.2975,
+      "continent": "Europe"
+    },
+    {
+      "name": "Berlin",
+      "latitude": 52.535152,
+      "longitude": 13.395206,
+      "continent": "Europe"
+    },
+    {
+      "name": "Rome",
+      "latitude": 41.89,
+      "longitude": 12.4964,
+      "continent": "Europe"
+    },
+    {
+      "name": "Madrid",
+      "latitude": 41.4036,
+      "longitude": 2.2,
+      "continent": "Europe"
+    },
+    {
+      "name": "New York City",
+      "latitude": 40.7484,
+      "longitude": -74,
+      "continent": "America"
+    },
+    {
+      "name": "Los Angeles",
+      "latitude": 34.052,
+      "longitude": -118.243,
+      "continent": "America"
+    },
+    {
+      "name": "Toronto",
+      "latitude": 43.65,
+      "longitude": -79.38,
+      "continent": "America"
+    },
+    {
+      "name": "São Paulo",
+      "latitude": -23.5505,
+      "longitude": -46.6333,
+      "continent": "America"
+    },
+    {
+      "name": "Buenos Aires",
+      "latitude": -34.6039,
+      "longitude": -58.3816,
+      "continent": "America"
+    },
+    {
+      "name": "Tokyo",
+      "latitude": 35.658,
+      "longitude": 139.745,
+      "continent": "Asia"
+    },
+    {
+      "name": "Seoul",
+      "latitude": 37.5796,
+      "longitude": 126.9787,
+      "continent": "Asia"
+    },
+    {
+      "name": "Beijing",
+      "latitude": 39.8822,
+      "longitude": 116.4066,
+      "continent": "Asia"
+    },
+    {
+      "name": "Shanghai",
+      "latitude": 31.2397,
+      "longitude": 121.4998,
+      "continent": "Asia"
+    },
+    {
+      "name": "Moscow",
+      "latitude": 55.7539,
+      "longitude": 37.62,
+      "continent": "Europe"
+    },
+    {
+      "name": "Istanbul",
+      "latitude": 41.0082,
+      "longitude": 28.9784,
+      "continent": "Europe"
+    },
+    {
+      "name": "Vienna",
+      "latitude": 48.2085,
+      "longitude": 16.3438,
+      "continent": "Europe"
+    },
+    {
+      "name": "Athens",
+      "latitude": 37.9838,
+      "longitude": 23.727,
+      "continent": "Europe"
+    },
+    {
+      "name": "Amsterdam",
+      "latitude": 52.3600,
+      "longitude": 4.888,
+      "continent": "Europe"
+    },
+    {
+      "name": "Stockholm",
+      "latitude": 59.3293,
+      "longitude": 18.0686,
+      "continent": "Europe"
+    },
+    {
+      "name": "New Delhi",
+      "latitude": 28.5532,
+      "longitude": 77.256,
+      "continent": "Asia"
+    },
+    {
+      "name": "Cairo",
+      "latitude": 29.9851931,
+      "longitude": 31.1368753,
+      "continent": "Africa"
+    },
+    {
+      "name": "Lisbon",
+      "latitude": 38.6926251,
+      "longitude": -9.2168341,
+      "continent": "Europe"
+    },
+    {
+      "name": "Copenhagen",
+      "latitude": 55.6733593,
+      "longitude": 12.5926644,
+      "continent": "Europe"
+    },
+    {
+      "name": "Helsinki",
+      "latitude": 60.170947,
+      "longitude": 24.9534871,
+      "continent": "Europe"
+    },
+    {
+      "name": "Dublin",
+      "latitude": 53.3415594,
+      "longitude": -6.2867221,
+      "continent": "Europe"
+    },
+    {
+      "name": "Washington, D.C.",
+      "latitude": 38.8898327,
+      "longitude": -77.0035552,
+      "continent": "America"
+    },
+    {
+      "name": "San Francisco",
+      "latitude": 37.818449,
+      "longitude": -122.4784711,
+      "continent": "America"
+    },
+    {
+      "name": "Chicago",
+      "latitude": 41.8822778,
+      "longitude": -87.6228818,
+      "continent": "America"
+    },
+    {
+      "name": "Vancouver",
+      "latitude": 49.2827,
+      "longitude": -123.1207,
+      "continent": "America"
+    },
+    {
+      "name": "Mexico City",
+      "latitude": 19.4279676,
+      "longitude": -99.1681498,
+      "continent": "America"
+    },
+    {
+      "name": "Rio de Janeiro",
+      "latitude": -22.9520543,
+      "longitude": -43.2110869,
+      "continent": "America"
+    },
+    {
+      "name": "Machu Pichu",
+      "latitude": -13.2283705,
+      "longitude": -72.5016458,
+      "continent": "America"
+    },
+    {
+      "name": "Sydney",
+      "latitude": -33.8592355,
+      "longitude": 151.2120159,
+      "continent": "Australia"
+    },
+    {
+      "name": "Melbourne",
+      "latitude": -37.8175632,
+      "longitude": 144.9673314,
+      "continent": "Australia"
+    }
+  ]
+}

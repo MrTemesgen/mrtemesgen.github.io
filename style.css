@@ -14,12 +14,12 @@ i{
    color:brown;
 }
 
- #map,
- #pano {
-   height: 15rem;
-   width: 30%;
-   border: gray;
-   border-style: dashed;
+ #map {
+  opacity: .8;
+  z-index: 100;
+  display: flow-root;
+  width: 27%;
+  height: 15rem;
  }
 
  #pano {
@@ -30,12 +30,6 @@ i{
    height: 91.5%;
  }
  
- #map{
-  opacity: .8;
-  border: none;
-  z-index: 100;
-  display: flow-root;
- }
  #map:hover{
    opacity: 1;
  }
@@ -45,6 +39,9 @@ i{
     font-size:smaller;
     background-color:seashell;
     margin: .2rem;
+ }
+ #history{  
+  overflow: auto;
  }
  #historyTable{
   text-align: center;
@@ -102,7 +99,7 @@ i{
  #panel{ 
   text-align: center;
   font-family: Monospace;
-  width: 30%;
+  width: 25%;
   text-align: center;
   border: black;
   border-style: solid;

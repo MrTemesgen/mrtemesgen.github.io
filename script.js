@@ -16,16 +16,20 @@ var gameOver = false;
 var historyShowing = false;
 //time to solve
 var tts;
+
+
 function initialize() {
-    getCities().then(res => {
+    //get city from the list of cities.
+    getCity().then(city => {
         var center = {lat: 0, lng: 0};
-        var city = res[parseInt(Math.random()*(res.length-1))]
-        city.lat = parseFloat(city.lat);
-        city.lng = parseFloat(city.lng);
+
+        //Show map
         const map = new google.maps.Map(document.getElementById("map"), {
             center: center,
             zoom: 2,
         });
+
+        //show panorama at the random location
         const panorama = new google.maps.StreetViewPanorama(
             document.getElementById("pano"),
             {
@@ -35,14 +39,17 @@ function initialize() {
                     heading: 34,
                     pitch: 10,
                 },
-                radius: 5000
+                radius: 1000
             }
         );
+
+        
         marker = new google.maps.Marker({
             position: center,
             map: map
         });
         
+        //add marker to the map and remove old one
         map.addListener('click', function(e) {
             if(!gameOver){
                 marker.setMap(null);
@@ -53,6 +60,8 @@ function initialize() {
                 marker.setMap(map);
             }
         });
+
+        //On submit show distance from point, time and show path between locations. save as cookie.
         document.querySelector("#submit").addEventListener('click', function() {
             if(!gameOver){
                 gameOver = true;
@@ -83,12 +92,14 @@ function initialize() {
                 getName(city.lat, city.lng).then(loc => {
                     var distanceInKM = getDistanceFromLatLonInKm(lat, lng, city.lat, city.lng);
                     var formattedTime = tts.toISOString().substring(11, 22);
+                    var linkToView = `http:\/\/maps.google.com\/maps?q=&layer=c&cbll=${city.lat},${city.lng}&cbp=11,0,0,0,0`;
                     typeWrite(document.querySelector("#distance"), `${distanceInKM}km from ${loc}. Found in ${formattedTime} (hh:mm:ss.ms)`);
-                    document.cookie = loc + "=" + JSON.stringify({
+                    document.cookie = loc + "=" + encodeURIComponent(JSON.stringify({
                         location: loc,
                         distanceInKM: distanceInKM,
-                        time: formattedTime
-                    });
+                        time: formattedTime,
+                        link: linkToView
+                    }));
                 });
             }
         })
@@ -103,10 +114,14 @@ function placeMarker(position, map) {
     });
     map.panTo(position);
 } 
-async function getCities(){
-    var res = await fetch("https://raw.githubusercontent.com/lutangar/cities.json/master/cities.json");
+async function getCity(){
+    var res = await fetch("world-city-listing-table.json");
     var json = await res.json();
-    return json;
+    var cities = json.cities;
+    var index = Math.round(Math.random()*cities.length);
+    var city = cities[index];
+    [city.lat, city.lng] = [city.latitude, city.longitude];
+    return city;
 }
 
 async function getName(lat, lng){
@@ -115,7 +130,6 @@ async function getName(lat, lng){
     var location = "Couldn't get location";
     try{
         location = json["results"][5].formatted_address;
-        
     }catch(err){
         console.log(json);
         console.log(console.error());
@@ -169,13 +183,16 @@ function showHistoryTable(){
         var cookies = getCookies();
         var table = `<table id="historyTable"><tr><th>Location</th><th>Distance</th><th>Time</th></tr>`
         for(var cookie of cookies){
-            table += `<tr><td>${cookie.location}</th><td>${cookie.distanceInKM}km</td><td>${cookie.time}</td></tr>`       
+            table += `<tr><td><a href=${cookie.link}>
+            <div style="height:100%;width:100%">${cookie.location}</div></a></td><td>${cookie.distanceInKM}km</td><td>${cookie.time}</td></tr>`       
         }
         table += `</table`;
         historyTable.innerHTML = table;
+        historyTable.setAttribute("style","height:10rem");
         showHistoryBtn.innerHTML = "Hide History";
     }else{
         historyTable.innerHTML = "";
+        historyTable.setAttribute("style","height:fit-content");
         showHistoryBtn.innerHTML = "Show History";
     }
     historyShowing = !historyShowing;
@@ -186,8 +203,9 @@ function getCookies(){
     var cookies = [];
     for (var i=0; i<pairs.length; i++){
         var pair = pairs[i].split("=");
+        //silently fails if cookie is corrupt
         if(pair[1]){
-            cookies.push(JSON.parse(pair[1]));
+            cookies.push(JSON.parse(decodeURIComponent(pair[1])));
         }
     }
     cookies.sort(function(a, b){
@@ -199,8 +217,10 @@ function getCookies(){
 window.initialize = initialize;
 
 typeWrite(element, "Mark the map to guess where you are...");
+
 timerID = setInterval(function(){
     tts = getTime();
     timer.innerHTML = tts.toISOString().substring(11, 22);
 }, 10);
+
 showHistoryBtn.addEventListener('click', showHistoryTable)
